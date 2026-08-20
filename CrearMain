@@ -1,0 +1,112 @@
+public class Cuenta {
+    private final String numero;
+    private final String titular;
+    private BigDecimal saldo;
+
+    public Cuenta(String numero, String titular, BigDecimal saldoInicial) {
+        this.numero   = numero;
+        this.titular  = titular;
+        this.saldo    = saldoInicial;
+    }
+
+    // Operación de negocio relevante: depositarpublic void depositar(BigDecimal monto) {
+        this.saldo = this.saldo.add(monto);
+    }
+
+    // Operación de negocio relevante: consultar saldopublic BigDecimal getSaldo() {
+        return this.saldo;
+    }
+}
+
+public class Cuenta {
+    private BigDecimal saldo;  // ← estado interno oculto (private)public Cuenta(BigDecimal saldoInicial) {
+        if (saldoInicial.compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("El saldo inicial no puede ser negativo");
+        this.saldo = saldoInicial;
+    }
+
+    // ✅ Operación pública que controla el cambio de estadopublic void debitar(BigDecimal monto) {
+        if (monto.compareTo(BigDecimal.ZERO) <= 0)
+            throw new IllegalArgumentException("El monto debe ser positivo");
+        if (monto.compareTo(this.saldo) > 0)
+            throw new SaldoInsuficienteException("Saldo: " + saldo + ", solicitado: " + monto);
+        this.saldo = this.saldo.subtract(monto);
+    }
+
+    public BigDecimal getSaldo() { return this.saldo; }
+    // N
+
+    public class Cuenta {
+    protected final String numero;
+    protected BigDecimal saldo;
+
+    public Cuenta(String numero, BigDecimal saldoInicial) {
+        this.numero = numero;
+        this.saldo  = saldoInicial;
+    }
+
+    public void depositar(BigDecimal monto) {
+        this.saldo = this.saldo.add(monto);
+    }
+
+    public void debitar(BigDecimal monto) {
+        if (monto.compareTo(this.saldo) > 0)
+            throw new SaldoInsuficienteException("Saldo insuficiente");
+        this.saldo = this.saldo.subtract(monto);
+    }
+
+    public BigDecimal getSaldo() { return saldo; }
+}
+
+public class CuentaCorriente extends Cuenta {
+    private BigDecimal limiteDescubierto; // atributo propio de CuentaCorrientepublic CuentaCorriente(String numero, BigDecimal saldoInicial, BigDecimal limiteDescubierto) {
+        super(numero, saldoInicial); // llama al constructor del padrethis.limiteDescubierto = limiteDescubierto;
+    }
+
+    // Sobreescribe el comportamiento para permitir saldo negativo hasta el límite@Overridepublic void debitar(BigDecimal monto) {
+        BigDecimal saldoDisponible = this.saldo.add(limiteDescubierto);
+        if (monto.compareTo(saldoDisponible) > 0)
+            throw new SaldoInsuficienteException("Supera el límite de descubierto");
+        this.saldo = this.saldo.subtract(monto);
+    }
+}
+
+// Interfaz común: define el contratopublic interface Pago {
+    void procesar(BigDecimal monto);
+    String getDescripcion();
+}
+// Implementación 1: pago con tarjeta de créditopublic class PagoTarjeta implements Pago {
+    private final String numeroTarjeta;
+
+    public PagoTarjeta(String numeroTarjeta) { this.numeroTarjeta = numeroTarjeta; }
+
+    @Overridepublic void procesar(BigDecimal monto) {
+        System.out.println("Cargando $" + monto + " a la tarjeta " + numeroTarjeta);
+        // lógica de autorización con la red de tarjetas    }
+
+    @Overridepublic String getDescripcion() { return "Tarjeta " + numeroTarjeta; }
+}
+// Implementación 2: pago por transferencia bancariapublic class PagoTransferencia implements Pago {
+    private final String cbu;
+
+    public PagoTransferencia(String cbu) { this.cbu = cbu; }
+
+    @Overridepublic void procesar(BigDecimal monto) {
+        System.out.println("Transfiriendo $" + monto + " al CBU " + cbu);
+        // lógica de transferencia interbancaria    }
+
+    @Overridepublic String getDescripcion() { return "Transferencia a CBU " + cbu; }
+}
+// Implementación 3: pago en efectivopublic class PagoEfectivo implements Pago {
+    @Overridepublic void procesar(BigDecimal monto) {
+        System.out.println("Registrando pago en efectivo de $" + monto);
+    }
+
+    @Overridepublic String getDescripcion() { return "Efectivo"; }
+}
+// ✅ El servicio de checkout trabaja con la abstracción Pago,// sin importar cuál es la implementación concretapublic class CheckoutService {
+    public void finalizarCompra(Pedido pedido, Pago metodoDePago) {
+        // El mismo código funciona para tarjeta, transferencia o efectivo        metodoDePago.procesar(pedido.getTotal());
+        System.out.println("Compra finalizada. Método: " + metodoDePago.getDescripcion());
+    }
+}
