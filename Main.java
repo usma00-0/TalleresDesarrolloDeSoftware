@@ -42,7 +42,7 @@ public class Main {
         sc.close();
     }
  
-    // ---------- Opciones del menú ----------
+    //Opciones del menú
  
     private static void mostrarMenu() {
         System.out.println("===== MENÚ =====");
@@ -142,7 +142,7 @@ public class Main {
         new CheckoutService().finalizarCompra(pedido, pago);
     }
  
-    // ---------- Utilidades de entrada ----------
+    //Utilidades de entrada
  
     private static boolean hayCuenta() {
         if (cuenta == null) {

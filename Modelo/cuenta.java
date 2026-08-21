@@ -27,13 +27,13 @@ public class Cuenta {
         this.saldo = saldoInicial;
     }
  
-    /** Aumenta el saldo. El monto debe ser positivo. */
+    //Aumenta el saldo. El monto debe ser positivo.
     public void depositar(BigDecimal monto) {
         validarMontoPositivo(monto);
         this.saldo = this.saldo.add(monto);
     }
  
-    /** Disminuye el saldo, validando que haya fondos suficientes. */
+    //Disminuye el saldo, validando que haya fondos suficientes.
     public void debitar(BigDecimal monto) {
         validarMontoPositivo(monto);
         if (monto.compareTo(this.saldo) > 0) {
@@ -67,9 +67,8 @@ public class Cuenta {
     }
 }
  
-/**
- * Excepción de negocio: se intenta debitar más de lo disponible.
- */
+//Excepción de negocio: se intenta debitar más de lo disponible.
+
 class SaldoInsuficienteException extends RuntimeException {
     public SaldoInsuficienteException(String mensaje) {
         super(mensaje);
