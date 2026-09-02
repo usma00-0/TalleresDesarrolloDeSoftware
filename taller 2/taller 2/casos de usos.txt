@@ -1,0 +1,176 @@
+Procesar pago
+Le permite al usuario hacer el pago del servicio público.
+
+Actor principal
+- Cliente
+
+Actores secundarios
+- Sistema de pagos
+- Empresa prestadora del servicio público
+
+Precondiciones
+- Debe existir consumo registrado en el hogar del cliente que utiliza el servicio público.
+
+Flujo principal
+- El usuario utiliza el servicio público durante un mes.
+- El usuario recibe la factura correspondiente al consumo mensual del servicio.
+- El usuario ingresa a la plataforma de la empresa prestadora del servicio.
+- El usuario inicia sesión en dicha plataforma.
+- El usuario consulta las facturas que tiene pendientes de pago.
+- El sistema recibe la información del usuario necesaria para procesar el pago.
+- El sistema verifica que el pago corresponda al monto total de la factura.
+- El sistema confirma la aprobación del pago.
+- El usuario queda al día con sus obligaciones de pago.
+
+Flujo alternativo 1
+- El usuario no cuenta con registro en la plataforma.
+- El usuario no tiene facturas por pagar.
+- El sistema no aprueba el pago.
+
+Flujo alternativo 2
+- El usuario selecciona pagar la factura utilizando una tarjeta de crédito o débito registrada previamente en la plataforma
+- El sistema de pagos verifica los datos de la tarjeta seleccionada por el usuario
+- El sistema se comunica con la entidad bancaria correspondiente para autorizar la transacción
+- El sistema confirma el pago y actualiza el estado de la factura a "pagada"
+
+Excepciones
+- El medio de pago seleccionado por el usuario no cuenta con fondos suficientes para cubrir el monto de la factura, por lo que el sistema rechaza la transacción
+Se pierde la conexión con el sistema de pagos durante el procesamiento, impidiendo que la transacción se complete
+
+Postcondiciones
+- El usuario recibe un correo electrónico confirmando que el pago de la factura fue exitoso. 
+
+
+
+
+
+OBTENER SALDO DE LA CUENTA   
+Le permite al usuario saber el saldo que tiene disponible en su cuenta
+
+Actor principal
+Cliente
+
+Actores secundarios 
+Sistema de cuentas
+Banco al que se encuentra afiliado el usuario
+
+Precondiciones
+El cliente debe estar afiliado o debe tener una cuenta vinculada al banco
+
+Flujo principal
+- El usuario ingresa a la plataforma o aplicación del banco al que se encuentra afiliado
+- El usuario inicia sesión con su usuario y contraseña de acceso
+- El usuario selecciona la opción de consultar el saldo de su cuenta
+- El sistema de cuentas recibe la solicitud de consulta del usuario
+- El sistema verifica la identidad y los datos de la cuenta asociada al usuario
+- El sistema consulta el saldo actual disponible en la cuenta
+- El sistema muestra al usuario el saldo disponible en su cuenta
+- El usuario visualiza la información del saldo consultado
+- El usuario selecciona opción en la plataforma del banco para ser redirigido al pago de la factura
+
+Flujo alternativo 1
+- El usuario no cuenta con registro en la plataforma del banco
+- El usuario ingresa usuario y contraseña incorrectas y no logra iniciar sesión
+- El sistema no logra establecer conexión con el banco para consultar el saldo
+- La cuenta del usuario se encuentra inactiva o bloqueada
+
+Flujo alternativo 2
+- El usuario solicita el saldo de una cuenta en moneda extranjera
+- El sistema de cuentas identifica el tipo de cuenta y su moneda asociada
+- El sistema consulta la tasa de cambio vigente con el banco afiliado
+- El sistema convierte y muestra al usuario el saldo disponible en la moneda correspondiente
+ 
+Excepciones
+- El servicio del banco no está disponible en el momento de la consulta, por lo que el sistema no puede recuperar el saldo
+- El usuario supera el número máximo de intentos de inicio de sesión permitidos, y el sistema bloquea temporalmente el acceso a la cuenta
+ 
+Postcondiciones
+- El usuario queda informado del saldo disponible en su cuenta al momento de la consulta
+
+
+
+
+
+
+
+Obtener Pagos por Cliente
+Actor Primario
+Cliente
+
+Actor Secundario
+Sistema de pagos
+
+Precondiciones
+El cliente debe encontrarse registrado
+Debe existir acceso disponible a la información de pagos
+
+
+Flujo Principal
+- El cliente inicia sesión.
+- El cliente selecciona la opción "Mis Pagos"
+- El sistema reconoce al cliente
+- El sistema realiza la consulta de los pagos registrados
+- El sistema despliega el listado de pagos
+- El cliente revisa la información desplegada
+
+Flujo alternativo 1
+- El cliente selecciona un rango de fechas
+- El sistema filtra los pagos correspondientes
+- El sistema muestra los resultados obtenidos
+
+Flujo alternativo 2
+- El cliente selecciona un servicio público
+- El sistema filtra los pagos relacionados con dicho servicio
+- El sistema muestra los resultados obtenidos
+
+Excepciones
+- El sistema no encuentra registros de pagos
+- El sistema muestra un mensaje informativo al respecto
+- El sistema no logra acceder a la información solicitada
+- El sistema notifica el error al usuario
+
+Postcondiciones
+- Se despliega el historial de pagos correspondiente al cliente
+
+
+
+
+
+
+Obtener Facturas por Cliente
+Actor Primario
+Cliente
+
+Actor Secundario
+Sistema de pagos
+
+Precondiciones
+El cliente debe encontrarse registrado
+Deben existir facturas vinculadas al cliente
+
+Flujo Principal
+- El usuario inicia sesión.
+- El usuario selecciona la opción "Mis Facturas"
+- El sistema reconoce al cliente
+- El sistema realiza la consulta de las facturas vinculadas
+- El sistema despliega el listado de facturas
+- El cliente visualiza los detalles correspondientes
+
+Flujo alternativo 1
+- Consultar solo facturas pendientes
+- El cliente selecciona el filtro "Pendientes"
+- El sistema despliega únicamente las facturas que se encuentran pendientes
+
+Flujo alternativo 2
+- Consultar solo facturas pagadas
+- El cliente selecciona el filtro "Pagadas"
+- El sistema despliega únicamente las facturas que ya fueron pagadas
+
+Excepciones
+- El sistema no encuentra facturas vinculadas al cliente
+- Se le informa al usuario de esta situación
+- El sistema no logra recuperar la información solicitada
+- Se despliega un mensaje de error al usuario
+
+Postcondiciones
+- Se despliega el listado de facturas correspondiente al cliente.
